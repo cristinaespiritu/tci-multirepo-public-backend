@@ -25,11 +25,13 @@ jobs:
           services:
             - docker
           script:
-            - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin hub.docker.com
+            - docker login -u "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
             - docker build -t tci-multirepo-public-backend .
             - docker images
-            - docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
-            - docker push $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
+            - docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic
+            - docker push $DOCKER_USERNAME/pocpublic   
+            # - docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
+            # - docker push $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
         # image: docker:stable
         #   services: docker:18-dind
         #   if: branch = master
