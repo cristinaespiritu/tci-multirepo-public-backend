@@ -7,6 +7,16 @@ jobs:
     include:
         - stage: build
           script:
-            - echo build running
             - go build -i -v
-            - echo build passed
+        
+        - stage: lint
+          script:
+            - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
+            - golangci-lint run
+        
+        - stage: test
+          script:
+            - go mod tidy
+            - go test ./... -tags=unit -v -coverprofile cover.out
+            - go tool cover -func cover.out | grep total
+            - go tool cover -html=cover.out -o cover.html        
