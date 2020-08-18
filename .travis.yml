@@ -26,7 +26,7 @@ jobs:
             - docker
           script:
             - docker build -t tci-multirepo-public-backend .
-            - docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
+            # - docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
             - bash .docker_push
             # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             # - docker push $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
