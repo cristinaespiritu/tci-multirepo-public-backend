@@ -1,9 +1,12 @@
 language: go
 
-sudo: false
-
 go:
     - 1.8
 
-script:
-    - go build -i -v
+jobs:
+    include:
+        - stage: build
+          script:
+            - echo build running
+            - go build -i -v
+            - echo build passed
