@@ -25,7 +25,7 @@ jobs:
           services:
             - docker
           script:
-            - docker login -u $DOCKER_USERNAME --password $DOCKER_PASSWORD
+            - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             - docker build -t tci-multirepo-public-backend .
             - docker images
             - docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic
