@@ -1,4 +1,3 @@
 #!/bin/bash
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
 docker push $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
