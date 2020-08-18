@@ -1,0 +1,9 @@
+language: go
+
+sudo: false
+
+go:
+    - 1.8
+
+script:
+    - go build -i -v
