@@ -5,28 +5,28 @@ go:
 
 jobs:
     include:
-        - stage: build
-          script:
-            - go build -i -v
+        # - stage: build
+        #   script:
+        #     - go build -i -v
         
-        - stage: lint
-          before_install:
-            - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
-          script:
-            - golangci-lint run
+        # - stage: lint
+        #   before_install:
+        #     - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
+        #   script:
+        #     - golangci-lint run
         
-        - stage: test
-          script:
-            - go test ./... -tags=unit -v -coverprofile cover.out
-            - go tool cover -func cover.out | grep total
-            - go tool cover -html=cover.out -o cover.html
+        # - stage: test
+        #   script:
+        #     - go test ./... -tags=unit -v -coverprofile cover.out
+        #     - go tool cover -func cover.out | grep total
+        #     - go tool cover -html=cover.out -o cover.html
 
         - stage: publish
           services:
             - docker
           script:
             - docker build -t tci-multirepo-public-backend .
-            - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            - docker login -u $DOCKER_USERNAME --password $DOCKER_PASSWORD hub.docker.com/repository/docker/cristinaespiritu/pocpublic
             - docker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
             - docker push $DOCKER_USERNAME/pocpublic:tci-multirepo-public-backend
         # image: docker:stable
