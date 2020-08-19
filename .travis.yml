@@ -27,10 +27,10 @@ jobs:
           script:
             - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             - export REPO=cristinaespiritu/pocpublic
-            - docker build -t $REPO:$COMMIT .
-            - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+            - docker build -t tci-multirepo-public-backend .
+            # - docker build -t $REPO:$COMMIT .
+            - docker tag tci-multirepo-public-backend $REPO:travis-$TRAVIS_BUILD_NUMBER
             - docker push $REPO
-            # - wdocker build -t tci-multirepo-public-backend .
             # - wdocker images
             # - wdocker tag tci-multirepo-public-backend $DOCKER_USERNAME/pocpublic
             # - wdocker push $DOCKER_USERNAME/pocpublic   
