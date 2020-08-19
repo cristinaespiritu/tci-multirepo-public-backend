@@ -1,0 +1,34 @@
+language: go
+
+go:
+    - 1.14
+
+jobs:
+    include:
+        - stage: build
+          script:
+            - go build -i -v
+        
+        - stage: lint
+          before_install:
+            - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
+          script:
+            - golangci-lint run
+        
+        - stage: test
+          script:
+            - go test ./... -tags=unit -v -coverprofile cover.out
+            - go tool cover -func cover.out | grep total
+            - go tool cover -html=cover.out -o cover.html
+
+        - stage: publish
+          if: branch = master
+          services:
+            - docker
+          script:
+            - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            - export REPO=cristinaespiritu/pocpublic
+            - docker build -t tci-multirepo-public-backend .
+            - docker tag tci-multirepo-public-backend $REPO:travis-$TRAVIS_BUILD_NUMBER
+            - docker push $REPO
+
